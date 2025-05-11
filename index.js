@@ -50,7 +50,6 @@ if (!kick && !twitch) {
             return;
           }
           const message = JSON.parse(metaMessage.data);
-          console.log(message);
           KickrenderMessage(message, data.subscriber_badges, chatView);
         };
       });
