@@ -64,7 +64,7 @@ if (!kick && !twitch) {
 
       twitchws.onmessage = function (event) {
         const message = event.data;
-        if (!message.includes("justinfan12345")) {
+        if (!(message.includes("justinfan12345") || message.includes("PING :tmi.twitch.tv"))) {
           TwitchrenderMessage(message, chatView);
         }
       };
@@ -199,23 +199,13 @@ function KickrenderMessage(mesaj, badges, masterDiv) {
   });
 }
 
-const parseMsg = (msg) => {
-  const newMessage ={
+const parseMsg = (msg) => ({
   name: msg.slice(1, msg.indexOf("!")),
   content: msg.slice(msg.indexOf(" :") + 2, -2),
-}
-  if(newMessage.name.includes(":tmi.twitch.tv"))
-  {
-    console.error("Hatalı mesaj:",msg);
-    return null;
-  }
-
-  return newMessage;
-};
+});
 
 function TwitchrenderMessage(mesaj, masterDiv) {
   const mesajobject = parseMsg(mesaj);
-  if (!mesajobject) return;
   const row = document.createElement("div");
   row.classList.add("chat-row");
 
