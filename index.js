@@ -2,13 +2,14 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const kick = urlParams.get("kick");
 const twitch = urlParams.get("twitch");
+const deletable = urlParams.get("deletable");
 
 const root = document.querySelector("div#root");
 
 if (!kick && !twitch) {
   root.innerHTML = `
         <div style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;">
-            <h1 style="color: #ff0000;">No parameters provided ?kick={kick_name}&twitch={twitch_name}</h1>
+            <h1 style="color: #ff0000;">No parameters provided ?kick={kick_name}&twitch={twitch_name}& (its optional) deletable={true}</h1>
         </div>
     `;
 } else {
@@ -142,13 +143,15 @@ function KickrenderMessage(mesaj, badges, masterDiv) {
   textSpan.innerText = mesaj.content;
   row.appendChild(textSpan);
 
-  const deletebutton = document.createElement("button");
-  deletebutton.innerText = "X";
-  deletebutton.classList.add("delete-button");
-  deletebutton.onclick = function () {
-    row.remove();
-  };
-  textSpan.appendChild(deletebutton);
+  if (deletable) {
+    const deletebutton = document.createElement("button");
+    deletebutton.innerText = "X";
+    deletebutton.classList.add("delete-button");
+    deletebutton.onclick = function () {
+      row.remove();
+    };
+    textSpan.appendChild(deletebutton);
+  }
 
   // 5. Ekle ve kaydır
   scrollToBottomIfNear(masterDiv, 200, true, () => {
@@ -185,13 +188,15 @@ function TwitchrenderMessage(mesaj, masterDiv) {
   textSpan.innerText = mesajobject.content;
   row.appendChild(textSpan);
 
-  const deletebutton = document.createElement("button");
-  deletebutton.innerText = "X";
-  deletebutton.classList.add("delete-button");
-  deletebutton.onclick = function () {
-    row.remove();
-  };
-  textSpan.appendChild(deletebutton);
+  if (deletable) {
+    const deletebutton = document.createElement("button");
+    deletebutton.innerText = "X";
+    deletebutton.classList.add("delete-button");
+    deletebutton.onclick = function () {
+      row.remove();
+    };
+    textSpan.appendChild(deletebutton);
+  }
 
   scrollToBottomIfNear(masterDiv, 200, true, () => {
     masterDiv.appendChild(row);
