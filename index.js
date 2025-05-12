@@ -63,7 +63,6 @@ if (!kick && !twitch) {
       twitchws.send(`JOIN #${twitch}`);
 
       twitchws.onmessage = function (event) {
-        console.log(event.data);
         const message = event.data;
         if (!message.includes("justinfan12345")) {
           TwitchrenderMessage(message, chatView);
