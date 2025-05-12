@@ -88,6 +88,49 @@ function getSubscriberBadgeUrl(subscriberBadges, badges) {
   return url;
 }
 
+function appendChatTextWithEmotes(text, masterDiv) {
+  // 1) span oluştur ve class ata
+  const span = document.createElement('span');
+  span.className = 'chat-text';
+
+  // 2) Metni emote kalıplarına göre parçala
+  //    Regex: [emote:12345:smile] gibi ifadeleri yakalar
+  const emoteRegex = /\[emote:(\d+):([^\]]+)\]/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = emoteRegex.exec(text)) !== null) {
+    const [fullMatch, emoteId, emoteName] = match;
+    const matchStart = match.index;
+
+    // a) Text’in emote’dan önceki kısmını düz metin olarak ekle
+    if (matchStart > lastIndex) {
+      const plainText = text.slice(lastIndex, matchStart);
+      span.appendChild(document.createTextNode(plainText));
+    }
+
+    // b) Bir img etiketi oluştur, gerekli özellikleri ata
+    const img = document.createElement('img');
+    img.src = `https://files.kick.com/emotes/${emoteId}/fullsize`;
+    img.alt = emoteName;
+    img.className = 'emote-image';
+
+    span.appendChild(img);
+
+    // c) İlerle
+    lastIndex = matchStart + fullMatch.length;
+  }
+
+  // 3) Kalan düz metni ekle
+  if (lastIndex < text.length) {
+    span.appendChild(document.createTextNode(text.slice(lastIndex)));
+  }
+
+  // 4) span'i masterDiv’e ekle
+  masterDiv.appendChild(span);
+}
+
+
 function KickrenderMessage(mesaj, badges, masterDiv) {
   // 1. Ana wrapper
   const row = document.createElement("div");
@@ -137,11 +180,8 @@ function KickrenderMessage(mesaj, badges, masterDiv) {
   badgeContainer.appendChild(username);
   row.appendChild(badgeContainer);
 
-  // 4. Username ve içerik
-  const textSpan = document.createElement("span");
-  textSpan.classList.add("chat-text");
-  textSpan.innerText = mesaj.content;
-  row.appendChild(textSpan);
+  // içerik
+  appendChatTextWithEmotes(mesaj.content, row);
 
   if (deletable) {
     const deletebutton = document.createElement("button");

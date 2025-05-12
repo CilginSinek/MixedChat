@@ -1,13 +1,13 @@
 /* Her satır: tam genişlik, flex, sağdaymış gibi görünür */
 .chat-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   width: 100%;
   margin: 4px 0;
   font-family: Arial, sans-serif;
   color: #eee;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -72,6 +72,12 @@
   gap: 6px;
 }
 .chat-username {
-  font: bold 0.9rem Arial, sans-serif;
+  font: bold 1.1rem Inter, sans-serif;
   color: rgb(0, 195, 255);
+}
+
+.emote-image {
+  width: 25px;
+  height: 25px;
+  margin-right: 4px;
 }
