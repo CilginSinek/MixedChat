@@ -1,15 +1,17 @@
 /* Her satır: tam genişlik, flex, sağdaymış gibi görünür */
 .chat-row {
-  display: flex;
-  align-items: center;
+  /* display: flex; */
+  align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  margin: 4px 0;
+  /* margin: 4px 0; */
   font-family: Arial, sans-serif;
   color: #eee;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   flex-direction: row;
   flex-wrap: wrap;
+  padding: 0 4px;
+  box-sizing: border-box;
 }
 
 .chat-col {
@@ -26,23 +28,25 @@
 
 /* Badge’ler: küçük simgeler */
 .badge-container {
-  display: flex;
+  display: inline;
   align-items: center;
   margin-right: 6px;
 }
 .badge-img {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-right: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  margin-right: 3px;
+  vertical-align: text-bottom;
 }
 
 /* Kullanıcı adı ve mesaj içeriği */
 .chat-text {
   line-height: 1.5;
-  white-space: normal; /* BU değiştirildi */
-  overflow-wrap: break-word; /* KELİMELER BÖLÜNEBİLSİN */
-  word-break: break-word; /* UZUN RAKAMLARDA VEYA KELİMELERDE KIRILSIN */
+  white-space: normal; /* BU deÄŸiÅŸtirildi */
+  overflow-wrap: break-word; /* KELÄ°MELER BÃ–LÃœNEBÄ°LSÄ°N */
+  word-break: break-word; /* UZUN RAKAMLARDA VEYA KELÄ°MELERDE KIRILSIN */
+  display: inline;
 }
 
 /* Kullanıcı adı koyu */
@@ -66,16 +70,16 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background-color: rgba(0, 0, 0, 0.67);
+  background-color: #1C1C1C;
   padding: 0;
   overflow-y: auto;
   gap: 6px;
+  font-family: system-ui;
 }
 .chat-username {
-  font: bold 1.1rem Inter, sans-serif;
+  font: bold 0.9rem Arial, sans-serif;
   color: rgb(0, 195, 255);
 }
-
 .emote-image {
   width: 25px;
   height: 25px;
