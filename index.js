@@ -101,7 +101,7 @@ function KickrenderMessage(mesaj, badges, masterDiv) {
   if (mesaj.type === "reply" && mesaj.metadata) {
     const preview = document.createElement("span");
     preview.classList.add("reply-preview");
-    preview.textContent = `${mesaj.metadata.original_sender.username}: ${mesaj.metadata.original_message.content}`;
+    preview.textContent = `↱ ${mesaj.metadata.original_sender.username}: ${mesaj.metadata.original_message.content}`;
     chatcol.appendChild(preview);
   }
   const userBadges = [

@@ -21,7 +21,7 @@
 .reply-preview {
   font-size: 0.75rem;
   color: #aaa;
-  margin-right: 6px;
+  margin-left: 11px;
 }
 
 /* Badge’ler: küçük simgeler */
@@ -39,7 +39,7 @@
 
 /* Kullanıcı adı ve mesaj içeriği */
 .chat-text {
-  line-height: 1.2;
+  line-height: 1.5;
   white-space: normal; /* BU değiştirildi */
   overflow-wrap: break-word; /* KELİMELER BÖLÜNEBİLSİN */
   word-break: break-word; /* UZUN RAKAMLARDA VEYA KELİMELERDE KIRILSIN */
