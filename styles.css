@@ -85,3 +85,7 @@
   margin-right: 4px;
   vertical-align: text-bottom;
 }
+.error{
+  background-color: red;
+  color: white;
+}

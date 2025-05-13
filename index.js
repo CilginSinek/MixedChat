@@ -53,6 +53,10 @@ if (!kick && !twitch) {
           const message = JSON.parse(metaMessage.data);
           KickrenderMessage(message, data.subscriber_badges, chatView);
         };
+        chat.onerror = function (error) {
+          console.error("WebSocket error:", error);
+          handleErrorRenderMessage("WebSocket error: " + error.message, chatView);
+        };
       });
   }
   if (twitch) {
@@ -64,10 +68,18 @@ if (!kick && !twitch) {
 
       twitchws.onmessage = function (event) {
         const message = event.data;
-        if (!(message.includes("justinfan12345") || message.includes("PING :tmi.twitch.tv"))) {
+        if(message.includes("PING :tmi.twitch.tv")){
+          twitchws.send("PONG");
+          return;
+        }
+        if (!message.includes("justinfan12345")) {
           TwitchrenderMessage(message, chatView);
         }
       };
+      twitchws.onerror = function (error){
+        console.error("WebSocket error:", error);
+        handleErrorRenderMessage("WebSocket error: " + error.message, chatView);
+      }
     };
   }
 }
@@ -259,4 +271,18 @@ function scrollToBottomIfNear(el, threshold = 200, smooth = false, renderfunc) {
       el.scrollTop = scrollHeight;
     }
   }
+}
+
+function handleErrorRenderMessage(mesaj, masterDiv) {
+  const row = document.createElement("div");
+  row.classList.add("chat-row error");
+
+  const textSpan = document.createElement("span");
+  textSpan.classList.add("chat-text");
+  textSpan.innerText = mesaj;
+  row.appendChild(textSpan);
+
+  scrollToBottomIfNear(masterDiv, 200, true, () => {
+    masterDiv.appendChild(row);
+  });
 }
