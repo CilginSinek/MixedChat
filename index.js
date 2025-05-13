@@ -3,14 +3,27 @@ const urlParams = new URLSearchParams(window.location.search);
 const kick = urlParams.get("kick");
 const twitch = urlParams.get("twitch");
 const deletable = urlParams.get("deletable");
+const fontParam = urlParams.get("font");
+const font = fontParam ? fontParam : "system-ui, sans-serif";
+
+if (fontParam) {
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = `https://fonts.googleapis.com/css2?family=${fontParam}`;
+  document.head.appendChild(link);
+}
+
+document.body.style.fontFamily = font;
 
 const root = document.querySelector("div#root");
 
 if (!kick && !twitch) {
   root.innerHTML = `
         <div style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;">
-            <h1 style="color: #ff0000;">No parameters provided ?kick={kick_name}&twitch={twitch_name}& (its optional) deletable={true}</h1>
-        </div>
+            <h1 style="color: #ff0000;">No parameters provided ?kick={kick_name}&twitch={twitch_name}</h1>
+            <h2 style="color: #ff0000;">Example: ?kick=kick_name&twitch=twitch_name</h2>
+            <h3 style="color: #ff0000;">Also deletable={deletable} and font={font}</h3>
+          </div>
     `;
 } else {
   // Create a chat view if at least one parameter exists

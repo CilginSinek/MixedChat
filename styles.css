@@ -5,7 +5,6 @@
   justify-content: flex-start;
   width: 100%;
   /* margin: 4px 0; */
-  font-family: Inter, sans-serif;
   color: #eee;
   font-size: 0.9rem;
   flex-direction: row;
@@ -73,10 +72,9 @@
   background-color: #1C1C1C;
   padding: 0;
   overflow-y: auto;
-  font-family: Inter;
 }
 .chat-username {
-  font: bold 0.9rem Inter, sans-serif;
+  font: bold 0.9rem;
   color: rgb(0, 195, 255);
 }
 .emote-image {
