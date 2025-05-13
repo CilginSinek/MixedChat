@@ -74,7 +74,7 @@
   overflow-y: auto;
 }
 .chat-username {
-  font: bold 0.9rem;
+  font-weight: bold;
   color: rgb(0, 195, 255);
 }
 .emote-image {
