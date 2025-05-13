@@ -68,7 +68,7 @@ if (!kick && !twitch) {
 
       twitchws.onmessage = function (event) {
         const message = event.data;
-        if(message.includes("PING :tmi.twitch.tv")){
+        if(message.includes("PING :tmi.twitch.tv") || message == "PING"){
           twitchws.send("PONG");
           return;
         }
