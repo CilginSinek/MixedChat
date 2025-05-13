@@ -57,6 +57,26 @@ if (!kick && !twitch) {
           console.error("WebSocket error:", error);
           handleErrorRenderMessage("WebSocket error: " + error.message, chatView);
         };
+        chat.onclose = function () {
+          console.warn("WebSocket connection closed. Retrying in 5 seconds...");
+          const retryConnection = setInterval(() => {
+            const newChat = new WebSocket(
+              "wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=8.4.0-rc2&flash=false"
+            );
+            newChat.onopen = function () {
+              console.log("WebSocket connection reestablished.");
+              clearInterval(retryConnection); // Stop retrying once connected
+              chat = newChat;
+              chat.onmessage = chat.onmessage;
+              chat.onerror = chat.onerror;
+              chat.onclose = chat.onclose;
+              chat.onopen(); // Call the original onopen logic
+            };
+            newChat.onmessage = chat.onmessage;
+            newChat.onerror = chat.onerror;
+            newChat.onclose = chat.onclose;
+          }, 5000);
+        };
       });
   }
   if (twitch) {
@@ -80,6 +100,25 @@ if (!kick && !twitch) {
         console.error("WebSocket error:", error);
         handleErrorRenderMessage("WebSocket error: " + error.message, chatView);
       }
+    };
+    twitchws.onclose = function () {
+      console.warn("WebSocket connection closed. Retrying in 5 seconds...");
+      const retryConnection = setInterval(() => {
+      // Reinitialize the WebSocket connection
+      const newTwitchWs = new WebSocket("wss://irc-ws.chat.twitch.tv/");
+      newTwitchWs.onopen = function () {
+        console.log("WebSocket connection reestablished.");
+        clearInterval(retryConnection); // Stop retrying once connected
+        twitchws = newTwitchWs;
+        twitchws.onmessage = twitchws.onmessage;
+        twitchws.onerror = twitchws.onerror;
+        twitchws.onclose = twitchws.onclose;
+        twitchws.onopen(); // Call the original onopen logic
+      };
+      newTwitchWs.onmessage = twitchws.onmessage;
+      newTwitchWs.onerror = twitchws.onerror;
+      newTwitchWs.onclose = twitchws.onclose;
+      }, 5000);
     };
   }
 }
