@@ -69,7 +69,10 @@ if (!kick && !twitch) {
         };
         chat.onerror = function (error) {
           console.error("WebSocket error:", error);
-          handleErrorRenderMessage("WebSocket error: " + error.message, chatView);
+          handleErrorRenderMessage(
+            "WebSocket error: " + error.message,
+            chatView
+          );
         };
         chat.onclose = function () {
           console.warn("WebSocket connection closed. Retrying in 5 seconds...");
@@ -102,7 +105,7 @@ if (!kick && !twitch) {
 
       twitchws.onmessage = function (event) {
         const message = event.data;
-        if(message.includes("PING :tmi.twitch.tv") || message == "PING"){
+        if (message.includes("PING :tmi.twitch.tv") || message == "PING") {
           twitchws.send("PONG");
           return;
         }
@@ -110,28 +113,28 @@ if (!kick && !twitch) {
           TwitchrenderMessage(message, chatView);
         }
       };
-      twitchws.onerror = function (error){
+      twitchws.onerror = function (error) {
         console.error("WebSocket error:", error);
         handleErrorRenderMessage("WebSocket error: " + error.message, chatView);
-      }
+      };
     };
     twitchws.onclose = function () {
       console.warn("WebSocket connection closed. Retrying in 5 seconds...");
       const retryConnection = setInterval(() => {
-      // Reinitialize the WebSocket connection
-      const newTwitchWs = new WebSocket("wss://irc-ws.chat.twitch.tv/");
-      newTwitchWs.onopen = function () {
-        console.log("WebSocket connection reestablished.");
-        clearInterval(retryConnection); // Stop retrying once connected
-        twitchws = newTwitchWs;
-        twitchws.onmessage = twitchws.onmessage;
-        twitchws.onerror = twitchws.onerror;
-        twitchws.onclose = twitchws.onclose;
-        twitchws.onopen(); // Call the original onopen logic
-      };
-      newTwitchWs.onmessage = twitchws.onmessage;
-      newTwitchWs.onerror = twitchws.onerror;
-      newTwitchWs.onclose = twitchws.onclose;
+        // Reinitialize the WebSocket connection
+        const newTwitchWs = new WebSocket("wss://irc-ws.chat.twitch.tv/");
+        newTwitchWs.onopen = function () {
+          console.log("WebSocket connection reestablished.");
+          clearInterval(retryConnection); // Stop retrying once connected
+          twitchws = newTwitchWs;
+          twitchws.onmessage = twitchws.onmessage;
+          twitchws.onerror = twitchws.onerror;
+          twitchws.onclose = twitchws.onclose;
+          twitchws.onopen(); // Call the original onopen logic
+        };
+        newTwitchWs.onmessage = twitchws.onmessage;
+        newTwitchWs.onerror = twitchws.onerror;
+        newTwitchWs.onclose = twitchws.onclose;
       }, 5000);
     };
   }
@@ -155,8 +158,8 @@ function getSubscriberBadgeUrl(subscriberBadges, badges) {
 
 function appendChatTextWithEmotes(text, masterDiv) {
   // 1) span oluştur ve class ata
-  const span = document.createElement('span');
-  span.className = 'chat-text';
+  const span = document.createElement("span");
+  span.className = "chat-text";
 
   // 2) Metni emote kalıplarına göre parçala
   //    Regex: [emote:12345:smile] gibi ifadeleri yakalar
@@ -175,10 +178,10 @@ function appendChatTextWithEmotes(text, masterDiv) {
     }
 
     // b) Bir img etiketi oluştur, gerekli özellikleri ata
-    const img = document.createElement('img');
+    const img = document.createElement("img");
     img.src = `https://files.kick.com/emotes/${emoteId}/fullsize`;
     img.alt = emoteName;
-    img.className = 'emote-image';
+    img.className = "emote-image";
 
     span.appendChild(img);
 
@@ -194,7 +197,6 @@ function appendChatTextWithEmotes(text, masterDiv) {
   // 4) span'i masterDiv’e ekle
   masterDiv.appendChild(span);
 }
-
 
 function KickrenderMessage(mesaj, badges, masterDiv) {
   // 1. Ana wrapper
@@ -218,32 +220,24 @@ function KickrenderMessage(mesaj, badges, masterDiv) {
   ];
 
   if (mesaj.sender.identity.badges.some((b) => b.type == "moderator")) {
-    userBadges.push(
-      "https://i0.wp.com/www.alphr.com/wp-content/uploads/2021/03/How-to-Make-Someone-a-Mod-in-Twitch-scaled.jpg?fit=2560%2C2560&ssl=1"
-    );
+    userBadges.push("./public/mod.png");
+  }
+
+  if (mesaj.sender.identity.badges.some((b) => b.type == "verified")) {
+    userBadges.push("./public/verified.png");
+  }
+
+  if (mesaj.sender.identity.badges.some((b) => b.type == "vip")) {
+    userBadges.push("./public/vip.png");
+  }
+
+  if (mesaj.sender.identity.badges.some((b) => b.type == "og")) {
+    userBadges.push("./public/og.png");
   }
 
   if (mesaj.sender.identity.badges.some((b) => b.type == "subscriber")) {
     userBadges.push(
       getSubscriberBadgeUrl(badges, mesaj.sender.identity.badges)
-    );
-  }
-
-  if(mesaj.sender.identity.badges.some((b) => b.type == "verified")) {
-    userBadges.push(
-      "./public/verified.png"
-    );
-  }
-
-  if(mesaj.sender.identity.badges.some((b) => b.type == "vip")) {
-    userBadges.push(
-      "./public/vip.png"
-    );
-  }
-
-  if(mesaj.sender.identity.badges.some((b) => b.type == "og")) {
-    userBadges.push(
-      "./public/og.png"
     );
   }
 
