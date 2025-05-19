@@ -222,14 +222,28 @@ function KickrenderMessage(mesaj, badges, masterDiv) {
       "https://i0.wp.com/www.alphr.com/wp-content/uploads/2021/03/How-to-Make-Someone-a-Mod-in-Twitch-scaled.jpg?fit=2560%2C2560&ssl=1"
     );
   }
+
   if (mesaj.sender.identity.badges.some((b) => b.type == "subscriber")) {
     userBadges.push(
       getSubscriberBadgeUrl(badges, mesaj.sender.identity.badges)
     );
   }
+
   if(mesaj.sender.identity.badges.some((b) => b.type == "verified")) {
     userBadges.push(
       "./public/verified.png"
+    );
+  }
+
+  if(mesaj.sender.identity.badges.some((b) => b.type == "vip")) {
+    userBadges.push(
+      "./public/vip.png"
+    );
+  }
+
+  if(mesaj.sender.identity.badges.some((b) => b.type == "og")) {
+    userBadges.push(
+      "./public/og.png"
     );
   }
 
