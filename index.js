@@ -64,6 +64,7 @@ if (!kick && !twitch) {
             return;
           }
           const message = JSON.parse(metaMessage.data);
+          console.log(message);
           KickrenderMessage(message, data.subscriber_badges, chatView);
         };
         chat.onerror = function (error) {
@@ -211,6 +212,7 @@ function KickrenderMessage(mesaj, badges, masterDiv) {
     preview.textContent = `↱ ${mesaj.metadata.original_sender.username}: ${mesaj.metadata.original_message.content}`;
     chatcol.appendChild(preview);
   }
+
   const userBadges = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIMKB-qewQd91nPHVwgcG0iNgK5JTsqcTsZw&s",
   ];
@@ -223,6 +225,11 @@ function KickrenderMessage(mesaj, badges, masterDiv) {
   if (mesaj.sender.identity.badges.some((b) => b.type == "subscriber")) {
     userBadges.push(
       getSubscriberBadgeUrl(badges, mesaj.sender.identity.badges)
+    );
+  }
+  if(mesaj.sender.identity.badges.some((b) => b.type == "verified")) {
+    userBadges.push(
+      "./public/verified.png"
     );
   }
 
