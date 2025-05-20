@@ -1,3 +1,12 @@
+/**
+ * @typedef {Object} Reward
+ * @property {string} reward_title - The title of the reward redeemed by the user.
+ * @property {number} user_id - The unique identifier of the user who redeemed the reward.
+ * @property {number} channel_id - The unique identifier of the channel where the reward was redeemed.
+ * @property {string} username - The username of the user who redeemed the reward.
+ * @property {string} user_input - The input or message provided by the user when redeeming the reward.
+ * @property {string} reward_background_color - The background color associated with the reward, in hex format (e.g., "#93EBE0").
+ */
 const urlParams = new URLSearchParams(window.location.search);
 
 const kick = urlParams.get("kick");
@@ -63,9 +72,14 @@ if (!kick && !twitch) {
           ) {
             return;
           }
-          const message = JSON.parse(metaMessage.data);
-          console.log(message);
-          KickrenderMessage(message, data.subscriber_badges, chatView);
+          if (metaMessage.event == "App\\Events\\ChatMessageEvent") {
+            const message = JSON.parse(metaMessage.data);
+            KickrenderMessage(message, data.subscriber_badges, chatView);
+          }
+          if (metaMessage.event == "RewardRedeemedEvent") {
+            const reward = JSON.parse(metaMessage.data);
+            handleRewardsRenderMessage(reward, chatView);
+          }
         };
         chat.onerror = function (error) {
           console.error("WebSocket error:", error);
@@ -342,12 +356,62 @@ function scrollToBottomIfNear(el, threshold = 200, smooth = false, renderfunc) {
 
 function handleErrorRenderMessage(mesaj, masterDiv) {
   const row = document.createElement("div");
-  row.classList.add("chat-row error");
+  row.classList.add("chat-row", "error");
 
   const textSpan = document.createElement("span");
   textSpan.classList.add("chat-text");
   textSpan.innerText = mesaj;
   row.appendChild(textSpan);
+
+  scrollToBottomIfNear(masterDiv, 200, true, () => {
+    masterDiv.appendChild(row);
+  });
+}
+
+/**
+ *
+ * @param {Reward} reward - Reward object, e.g.
+ * @param {*} masterDiv
+ */
+function handleRewardsRenderMessage(reward, masterDiv) {
+  const row = document.createElement("div");
+  row.classList.add("chat-row", "reward-row");
+
+  const box = document.createElement("div");
+  box.className = "reward-box";
+
+  const userDiv = document.createElement("div");
+  userDiv.className = "reward-username";
+
+  const badgeImg = document.createElement("img");
+  badgeImg.src =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIMKB-qewQd91nPHVwgcG0iNgK5JTsqcTsZw&s";
+  badgeImg.alt = "badge";
+  badgeImg.className = "badge-img";
+
+  const usernameSpan = document.createElement("span");
+  usernameSpan.textContent = reward.username;
+
+  userDiv.style.color = reward.reward_background_color || "#888";
+
+  userDiv.appendChild(badgeImg);
+  userDiv.appendChild(usernameSpan);
+
+  const rewardDiv = document.createElement("div");
+  rewardDiv.className = "reward-title";
+  rewardDiv.innerHTML = `<b>${reward.reward_title}</b> ödülünü aldı`;
+
+  box.appendChild(userDiv);
+  box.appendChild(rewardDiv);
+
+  if (reward.user_input && reward.user_input.trim() !== "") {
+    const inputDiv = document.createElement("div");
+    inputDiv.className = "reward-userinput";
+    inputDiv.textContent = reward.user_input;
+    box.appendChild(inputDiv);
+  }
+
+  row.appendChild(box);
 
   scrollToBottomIfNear(masterDiv, 200, true, () => {
     masterDiv.appendChild(row);

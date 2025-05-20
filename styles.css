@@ -88,3 +88,41 @@
   background-color: red;
   color: white;
 }
+.reward-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.reward-box {
+  background: transparent;
+  border-radius: 10px;
+  padding: 0;
+  min-width: 240px;
+  max-width: 340px;
+  box-shadow: 0 2px 8px 0 #0001;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.reward-username {
+  font-weight: bold;
+  text-align: left;
+  /* background ve color dinamik olarak JS'de atanıyor */
+}
+
+.reward-title {
+  padding: 10px 12px 8px 12px;
+  text-align: left;
+}
+
+.reward-userinput {
+  border: 1px solid #eee;
+  border-radius: 8px 8px 8px 8px;
+  margin: 0 12px 12px 12px;
+  padding: 8px 10px;
+  word-break: break-word;
+  text-align: left;
+}
