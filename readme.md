@@ -11,3 +11,4 @@ It is designed to be lightweight and efficient, making it easy to use without an
 ## To Do
 - multiple monitoring same time
 - error handling
+- need more languages
