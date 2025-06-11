@@ -53,16 +53,29 @@ if (!kick && !twitch) {
       })
       .then((data) => {
         const chatroom = data.chatroom.id;
+        const channelID = data.id;
         const chat = new WebSocket(
           "wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=8.4.0-rc2&flash=false"
         );
         chat.onopen = function () {
-          chat.send(
-            JSON.stringify({
-              event: "pusher:subscribe",
-              data: { auth: "", channel: `chatrooms.${chatroom}.v2` },
-            })
-          );
+          const subscribeMessage1 = {
+            event: "pusher:subscribe",
+            data: {
+              auth: "",
+              channel: `chatrooms.${chatroom}.v2`,
+            },
+          };
+        
+          const subscribeMessage2 = {
+            event: "pusher:subscribe",
+            data: {
+              auth: "",
+              channel: `chatroom_${chatroom}`,
+            },
+          };
+          
+          chat.send(JSON.stringify(subscribeMessage1));
+          chat.send(JSON.stringify(subscribeMessage2));
         };
         chat.onmessage = function (event) {
           const metaMessage = JSON.parse(event.data);
