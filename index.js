@@ -76,6 +76,13 @@ if (!kick && !twitch) {
 
           chat.send(JSON.stringify(subscribeMessage1));
           chat.send(JSON.stringify(subscribeMessage2));
+
+          // Her 2 dakikada bir ping gönder
+          setInterval(() => {
+            if (chat.readyState === WebSocket.OPEN) {
+              chat.send(JSON.stringify({"event":"pusher:ping","data":{}}));
+            }
+          }, 120000); // 2 dakika = 120000 ms
         };
         chat.onmessage = function (event) {
           const metaMessage = JSON.parse(event.data);
